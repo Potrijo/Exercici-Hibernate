@@ -1,0 +1,140 @@
+package com.fran.BaseDeDatos1;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+import org.apache.commons.dbutils.DbUtils;
+
+public class AplicacioJDBC {
+	
+	private static Connection con;
+	private static Statement st;
+	private static ResultSet rs;
+	private static PreparedStatement pst;
+	
+	public static void main(String[] args) {
+		String deporte;
+		boolean state = true;
+		Scanner input = new Scanner(System.in);
+		try {
+			Class.forName("org.postgresql.Driver");
+			String url = "jdbc:postgresql://localhost:5432/DEPORTES";
+			String usuario = "postgres";
+			String password = "1234";
+			con = DriverManager.getConnection(url, usuario, password);			
+		}
+		 
+		 catch (ClassNotFoundException ce) {
+			 System.out.println("PostgreSQL no accesible");
+		 }
+		 catch (SQLException se) {
+			 System.out.println("Fallo en la Select");
+		 }
+		 catch (Exception e) {
+			 e.printStackTrace();
+		 }
+		while(state) {
+			System.out.println("Menú Aplicació JDBC:");
+			System.out.println("1: Añadir un deporte. Con el uso de Statement.");
+			System.out.println("2: Añadir un deportista. Con el uso de PreparedStatement");
+			System.out.println("3: Buscar por nombre de deportista \n(búsqueda parcial, no sensible a mayúsculas), mostrando el nombre, \ncódigo de deportista y nombre del deporte que practica. Para ello utiliza la función que has\n creado y llámala con CallableStatement.");
+			System.out.println("4: Deportes vacíos. Para ello utiliza la función que has creado y llámala con CallableStatement.");
+			
+			switch(input.nextInt()) {
+			case 1:
+				System.out.println("Introduce un deporte");
+				input.nextLine();
+				deporte = input.nextLine();
+				añadirDeporte(deporte);
+				break;
+			case 2:
+				System.out.println("Caso 2");
+				break;
+			case 3:
+				System.out.println("Caso 3");
+				break;
+			case 4:
+				System.out.println("Caso 4");
+				break;
+			case 5:
+				state = false;
+				System.out.println("Bye");
+				break;
+			}
+		}
+		input.close();
+	}
+	
+	public static void añadirDeporte(String deporte){
+		
+		 //con = null;
+		 //st = null;
+		 //rs = null;
+		
+		 try {
+			 //Class.forName("org.postgresql.Driver");
+			 //String url = "jdbc:postgresql://localhost:5432/DEPORTES";
+			 //String usuario = "postgres";
+			 //String password = "1234";
+			 //con = DriverManager.getConnection(url, usuario, password);
+			 st = con.createStatement();
+			 String sentenciaSQL = "INSERT INTO deportes VALUES((SELECT MAX(cod)+1 from deportes), '"+deporte+"')";
+			 int cantidad = st.executeUpdate(sentenciaSQL);
+			 System.out.println("Datos insertados: " + cantidad);
+		 }
+		 catch (SQLException se) {
+			 System.out.println("Fallo en la Select");
+		 }
+		 catch (Exception e) {
+			 e.printStackTrace();
+		 }
+		 finally {
+			 DbUtils.closeQuietly(rs);
+			 DbUtils.closeQuietly(st);
+			 DbUtils.closeQuietly(con);
+		 }
+	}
+	
+	public static void addDeportista(String deportista) {
+		
+		 con = null;
+		 pst = null;
+		 rs = null;
+		
+		 try {
+			 Class.forName("org.postgresql.Driver");
+			 String url = "jdbc:postgresql://localhost:5432/DEPORTES";
+			 String usuario = "postgres";
+			 String password = "1234";
+			 con = DriverManager.getConnection(url, usuario, password);
+			 pst = con.prepareStatement("INSERT INTO deportistas VALUES((SELECT MAX(cod)+1 from deportistas), ?, ?)");
+			 pst.setString(1, "Pakito");
+			 pst.setInt(2, 3);
+			 int cantidad = pst.executeUpdate();
+			 System.out.println("Datos insertados: " + cantidad);
+		 }
+		 catch (ClassNotFoundException ce) {
+			 System.out.println("PostgreSQL no accesible");
+		 }
+		 catch (SQLException se) {
+			 System.out.println("Fallo en la Select");
+		 }
+		 catch (Exception e) {
+			 e.printStackTrace();
+		 }
+		 finally {
+			 DbUtils.closeQuietly(rs);
+			 DbUtils.closeQuietly(st);
+			 DbUtils.closeQuietly(con);
+		 }
+	}
+	
+	public static void conectaBaseDeDatos() {
+		
+	}
+}

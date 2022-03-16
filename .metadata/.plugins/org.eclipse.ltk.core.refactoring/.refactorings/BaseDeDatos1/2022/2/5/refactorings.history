@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;com.fran.BaseDeDatos1.Connection.java&apos; to &apos;ConectaDB.java&apos;&#x0D;&#x0A;- Original project: &apos;BaseDeDatos1&apos;&#x0D;&#x0A;- Original element: &apos;com.fran.BaseDeDatos1.Connection.java&apos;&#x0D;&#x0A;- Renamed element: &apos;com.fran.BaseDeDatos1.ConectaDB.java&apos;" description="Rename compilation unit &apos;Connection.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.fran.BaseDeDatos1{Connection.java" name="ConectaDB.java" references="false" stamp="1644188741273" version="1.0"/>
+</session>
